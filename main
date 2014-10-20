@@ -1,0 +1,12 @@
+package csvParse;
+
+public class Main {
+	public static void main(String[] args){
+		String fileLocation = "/Users/yuanshi/Desktop/javaprojects/port.csv";
+		combinedPF newPF = new combinedPF();
+		String[] output = newPF.getCode(fileLocation);
+		for (int i=0; i < output.length; i++){
+			System.out.println(output[i]);
+		}
+	}
+}
