@@ -1,0 +1,81 @@
+package csvParse;
+
+
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+
+public class combinedPF {
+ 
+  public String[] getCode(String fileLocation) {
+ 
+	combinedPF obj = new combinedPF();
+	getPair result = obj.run(fileLocation);
+	ArrayList<String> listPF = new ArrayList<String>();
+	ArrayList<String> listExchange = new ArrayList<String>();
+	String[] resultPF = result.getArray1();
+	String[] resultExchange = result.getArray2();
+	for (String s : resultPF) {
+	    if (s != null)
+	        listPF.add(s);
+	}
+	String[] resultFinal = listPF.toArray(new String[listPF.size()]);
+	//for (String j : resultExchange) {
+	//    if (j != null)
+	//        listExchange.add(j);
+	//}
+	return resultFinal;
+  }
+  
+  public getPair run(String fileLocation) {
+	  
+	String csvFile = fileLocation;
+	BufferedReader br = null;
+	String line = "";
+	String cvsSplitBy = ",";
+ 
+	try {
+		String[] PF = new String[4];
+		String[] Exchange = new String[4];
+		br = new BufferedReader(new FileReader(csvFile));
+		int i=0;
+		while ((line = br.readLine()) != null) {
+ 
+		    // use comma as separator
+			String[] lineData = line.split(cvsSplitBy);
+			PF[i] = lineData[6];
+			Exchange[i] = lineData[4];
+			i++;
+		}
+		
+		String[] unique1 = new HashSet<String>(Arrays.asList(PF)).toArray(new String[PF.length]);
+		
+		//exchange
+		String[] unique2 = new HashSet<String>(Arrays.asList(Exchange)).toArray(new String[Exchange.length]);
+		getPair pair = new getPair(unique1,unique2);
+		return pair;
+	} catch (FileNotFoundException e) {
+		e.printStackTrace();
+	} catch (IOException e) {
+		e.printStackTrace();
+	} finally {
+		if (br != null) {
+			try {
+				br.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+ 
+	System.out.println("Done");
+	return null;
+ }
+}
+
+ 
